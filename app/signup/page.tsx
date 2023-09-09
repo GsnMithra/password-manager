@@ -2,19 +2,16 @@
 
 import { Raleway } from "next/font/google";
 import stylesSign from "../styles/signup.module.css";
+import stylesPage from "../styles/page.module.css";
 import Link from "next/link";
 import { useState } from "react";
-import { createUser } from "../../server/serverActions";
+import { UserCreate } from "../../server/serverActions";
 
 const rale = Raleway({
   weight: ["600", "700", "900"],
   style: ["normal", "italic"],
   subsets: ["latin"],
 });
-
-const styleContainer = {
-  height: "450px !important",
-};
 
 export default function SignUp() {
   const [username, setUsername] = useState ("");
@@ -28,13 +25,13 @@ export default function SignUp() {
         }
 
         console.log ('hi')
-        createUser (username, password);
+        UserCreate (username, password);
     }
 
   return (
-    <main className={stylesSign.main}>
-      <div className={`${stylesSign.container} ${stylesSign.container}`}>
-        <div className={stylesSign.headingText}>
+    <main className={stylesPage.main}>
+      <div className={stylesSign.container}>
+        <div className={stylesPage.headingText}>
           <h1 className={rale.className}>Password Manager</h1>
         </div>
 
@@ -62,10 +59,10 @@ export default function SignUp() {
         </div>
         <div className={stylesSign.navigate}>
           <Link href="/">
-            <button className={stylesSign.button}>Back</button>
+            <button className={`${stylesSign.button} ${rale.className}`}>Back</button>
           </Link>
           <Link href="/">
-            <button className={stylesSign.button} onClick={handleSubmit}>Submit</button>
+            <button className={`${stylesSign.button} ${rale.className}`} onClick={handleSubmit}>Submit</button>
           </Link>
         </div>
       </div>

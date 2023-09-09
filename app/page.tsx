@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react'
-import stylesPage from './styles/page.module.css'
-import { Raleway } from 'next/font/google'
-import Link from 'next/link'
-const rale = Raleway ({
-  weight: ['600', '700', '900'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-})
+import { useEffect, useState } from "react";
+import stylesPage from "./styles/page.module.css";
+import { Raleway } from "next/font/google";
+import Link from "next/link";
+const rale = Raleway({
+  weight: ["600", "700", "900"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+});
 
-export default function Home () {
-  const [loadedPage, setLoadedPage] = useState (false)
-  useEffect (() => {
-    setLoadedPage (true)
-  }, [])
+export default function Home() {
+  const [loadedPage, setLoadedPage] = useState(false);
+  useEffect(() => {
+    setLoadedPage(true);
+  }, []);
 
   return (
     <main className={stylesPage.main}>
@@ -23,12 +23,12 @@ export default function Home () {
           <h1 className={rale.className}>Password Manager</h1>
         </div>
         <div className={stylesPage.operations}>
-          <Link href='/signup'>
+          <Link href="/signup">
             <div className={stylesPage.button}>
               <span className={rale.className}>Sign Up</span>
             </div>
           </Link>
-          <Link href='/login'>
+          <Link href="/login">
             <div className={stylesPage.button}>
               <span className={rale.className}>Log In</span>
             </div>
@@ -36,5 +36,5 @@ export default function Home () {
         </div>
       </div>
     </main>
-  )
+  );
 }
