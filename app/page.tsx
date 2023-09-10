@@ -1,21 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import stylesPage from "./styles/page.module.css";
 import { Raleway } from "next/font/google";
 import Link from "next/link";
+
 const rale = Raleway({
   weight: ["600", "700", "900"],
   style: ["normal", "italic"],
   subsets: ["latin"],
 });
 
-export default function Home() {
-  const [loadedPage, setLoadedPage] = useState(false);
-  useEffect(() => {
-    setLoadedPage(true);
-  }, []);
-
+export default function Home () {
   return (
     <main className={stylesPage.main}>
       <div className={stylesPage.container}>

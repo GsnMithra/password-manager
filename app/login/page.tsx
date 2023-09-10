@@ -8,7 +8,7 @@ import stylesSign from "../styles/signup.module.css";
 import Link from "next/link";
 import { UserLogin } from "@/server/serverActions";
 import { useRouter } from "next/navigation";
-
+import Cookies from "js-cookie";
 
 const rale = Raleway({
   weight: ["600", "700", "900"],
@@ -16,32 +16,33 @@ const rale = Raleway({
   subsets: ["latin"],
 });
 
-export default function Login () {
+export default function Login() {
 
-  const [username, setUsername] = useState ("");
-  const [password, setPassword] = useState ("");
-  const router = useRouter ();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: any) => {
-    e.preventDefault ();
+    e.preventDefault();
     if (password.length == 0) {
-        alert ("Password field cannot be empty!");
-        return;
-      }
-
-    const validity = await UserLogin (username, password)
-    if (!validity.existUser) {
-        alert ("User does not exist!");
-        return;
-    } 
-    if (!validity.validPassword) {
-        alert ("Incorrect password!");
-        return;
-    } 
-    else {
-        router.push ("/dashboard");
+      alert("Password field cannot be empty!");
+      return;
     }
-}
+
+    const validity = await UserLogin(username, password)
+    if (!validity.existUser) {
+      alert("User does not exist!");
+      return;
+    }
+    if (!validity.validPassword) {
+      alert("Incorrect password!");
+      return;
+    }
+    else {
+      Cookies.set("authenticated", "true");
+      router.push("/dashboard");
+    }
+  }
 
   return (
     <main className={stylesPage.main}>
@@ -56,13 +57,13 @@ export default function Login () {
               type="text"
               placeholder="Username"
               className={`${stylesSign.input} ${rale.className}`}
-              onChange={(e) => setUsername (e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <input
               type="password"
               placeholder="Password"
               className={`${stylesSign.input} ${rale.className}`}
-              onChange={(e) => setPassword (e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </form>
         </div>

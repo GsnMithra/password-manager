@@ -23,6 +23,8 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
+    "js-cookie": "^3.0.5",
     "prisma": "^5.2.0"
   }
 }
