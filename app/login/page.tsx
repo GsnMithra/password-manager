@@ -29,7 +29,9 @@ export default function Login() {
       return;
     }
 
-    const validity = await UserLogin(username, password)
+    const validity = await UserLogin (username, password)
+    if (validity === undefined)
+      return;
     if (!validity.existUser) {
       alert("User does not exist!");
       return;
@@ -40,6 +42,8 @@ export default function Login() {
     }
     else {
       Cookies.set("authenticated", "true");
+      if (validity.userID != undefined)
+        Cookies.set("userID", validity.userID.toString ());
       router.push("/dashboard");
     }
   }

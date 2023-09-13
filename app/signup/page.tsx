@@ -20,12 +20,13 @@ export default function SignUp() {
 
     const handleSubmit = () => {
         if (password !== confirmPassword) {
-            alert ("Passwords do not match");
-            return;
+          return;
+        } if (username.includes (' ')) {
+          alert ("Username must not contiain any whitespaces!");
         }
-
-        console.log ('hi')
-        UserCreate (username, password);
+        else {
+          UserCreate (username, password);
+        }
     }
 
   return (

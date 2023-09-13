@@ -3,7 +3,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
-import Cookies from "js-cookie";
 
 export async function UserCreate (username: string, password: string) {
     try {
@@ -28,16 +27,19 @@ export async function UserCreate (username: string, password: string) {
 }
 
 export async function UserLogin (username: string, password: string) {
-    let validity = {
-        existUser: false,
-        validPassword: false
-    }
+    let validity;
     try {
         const user = await prisma.user.findUnique ({
             where: {
                 username: username
             }
         });
+
+        validity = {
+            existUser: false,
+            validPassword: false,
+            userID: user?.id
+        }
 
         if (user?.username == username) {
             const comparision = await new Promise((resolve, reject) => {
@@ -47,9 +49,9 @@ export async function UserLogin (username: string, password: string) {
                     reject(err);
                   }
                   if (result) {
-                    resolve(true);
+                    resolve (true);
                   } else {
-                    resolve(false);
+                    resolve (false);
                   }
                 });
               });
@@ -57,12 +59,10 @@ export async function UserLogin (username: string, password: string) {
             if (comparision) {
                 validity.existUser = true;
                 validity.validPassword = true;
-                console.log("Before setting userID cookie:", Cookies.get("userID"));
-                Cookies.set("userID", user.id.toString());
-                console.log("After setting userID cookie:", Cookies.get("userID"));
             } else {
                 validity.existUser = true;
                 validity.validPassword = false;
+                validity.userID = user.id;
             }
         } else {
             validity.existUser = false;
@@ -76,16 +76,13 @@ export async function UserLogin (username: string, password: string) {
     }
 }
 
-export async function AddUserCredentials (website: string, username: string, password: string) {
+export async function AddUserCredentials (userID: number, website: string, username: string, password: string) {
     try {
-        const userId = parseInt (Cookies.get ("userID")!);
-        console.log (userId);
         const user = await prisma.user.findUnique ({
             where: {
-                id: userId
+                id: userID
             }
         });
-
         const cred = await prisma.credentials.create ({
             data: {
                 name: website,
@@ -102,5 +99,21 @@ export async function AddUserCredentials (website: string, username: string, pas
         console.error (e);
     } finally {
         await prisma.$disconnect ();
+    }
+}
+
+export async function FetchUserCredentials (userID: number) {
+    let creds;
+    try {
+        creds = await prisma.credentials.findMany ({
+            where: {
+                userId: userID
+            }
+        });
+    } catch (e) {
+        console.error (e);
+    } finally {
+        await prisma.$disconnect ();
+        return creds;
     }
 }
